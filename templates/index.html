@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.4" integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV" crossorigin="anonymous"></script>
+    <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='styles.css') }}"
+        />
+    <title>Biodiversity Explorer</title>
+</head>
+<body>
+
+    <header>
+        <h1 class="heading">Biodiversity Explorer</h1>
+        <h3 class="subheading">Your Nature Guide Simplified</h3>
+        <hr>
+        <nav>
+            <ul>
+                <li class="nav-item none-list"><a href="/" class="link-item ">Home</a></li>
+                <li class="nav-item none-list"><a href="/about" class="link-item">About</a></li>
+                <li class="nav-item none-list"><a href="/faq" class="link-item">FAQ</a></li>
+                <li class="nav-item none-list"><a href="/contact" class="link-item">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="area">
+        <aside>
+            <ul>
+                <li class="none-list"><a class="list-item">Fauna</a>
+                    <ul>
+                        <!-- Remove htmx from below line to run Category search -->
+                        <li class="none-list layered" hx-get="/birds" hx-target="#output"><a class="list-item">Bird</a>
+                            <ul>
+                                {%for type in bird_types%}
+                                <li class="none-list layered list-item" ><a class="link" hx-get="/birds/{{ type['type'] }}" hx-trigger="click" hx-target="#output">{{ type['type'] }}</a></li>
+                                {%endfor%}
+                            </ul>
+                        </li>
+                        <li class="none-list layered" hx-get="/insects" hx-target="#output"><a class="list-item">Insects</a></li>
+                        <li class="none-list layered" hx-get="/mammals" hx-target="output"><a class="list-item">Mammals</a></li>
+                        <li class="none-list layered" hx-get="/reptiles" hx-target="output"><a class="list-item">Reptiles</a></li>
+                    </ul>
+                </li>
+    
+                <li class="none-list"><a class="list-item">Flora</a></li>
+            </ul>
+        </aside>
+    
+        <div class="display">
+            
+            <div  id="output" hx-swap-oob>
+               
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
