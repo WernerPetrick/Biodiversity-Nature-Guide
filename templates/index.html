@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@1.9.4" integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link
             rel="stylesheet"
             href="{{ url_for('static', filename='styles.css') }}"
@@ -26,19 +27,21 @@
         </nav>
     </header>
 
-    <div class="area">
+    <div x-data="{open: false}"class="area">
         <aside>
             <ul>
-                <li class="none-list"><a class="list-item">Fauna</a>
-                    <ul>
+                <li class="none-list" @click="open = ! open"><a class="list-item">Fauna</a>
+                    <ul x-show="open" @click="open = false">
                         <!-- Remove htmx from below line to run Category search -->
-                        <li class="none-list layered" hx-get="/birds" hx-target="#output"><a class="list-item">Bird</a>
-                            <ul>
-                                {%for type in bird_types%}
-                                <li class="none-list layered list-item" ><a class="link" hx-get="/birds/{{ type['type'] }}" hx-trigger="click" hx-target="#output">{{ type['type'] }}</a></li>
-                                {%endfor%}
-                            </ul>
-                        </li>
+                        <div x-data = "{open:false}">
+                            <li class="none-list layered" hx-get="/birds" hx-target="#output" @click="open = ! open"><a class="list-item">Birds</a>
+                                <ul x-show="open" @click="open = false">
+                                    {%for type in bird_types%}
+                                    <li class="none-list layered list-item" ><a class="link" hx-get="/birds/{{ type['type'] }}" hx-trigger="click" hx-target="#output">{{ type['type'] }}</a></li>
+                                    {%endfor%}
+                                </ul>
+                            </li>
+                        </div>
                         <li class="none-list layered" hx-get="/insects" hx-target="#output"><a class="list-item">Insects</a></li>
                         <li class="none-list layered" hx-get="/mammals" hx-target="output"><a class="list-item">Mammals</a></li>
                         <li class="none-list layered" hx-get="/reptiles" hx-target="output"><a class="list-item">Reptiles</a></li>
